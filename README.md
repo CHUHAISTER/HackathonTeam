@@ -1,2 +1,2 @@
 # HalloweenHackathon
- THEBESTTEAM
+ CODE OR DIE
