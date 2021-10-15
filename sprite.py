@@ -35,11 +35,11 @@ class Player(MovableSprite):
         super().__init__(x, y, image)
 
     def move(self):
-        if self.moving_right and self.rect.right < config.level1_height:
+        if self.moving_right and self.rect.right < config.level1_width:
             self.rect.x += 1
         if self.moving_left and self.rect.left > 0:
             self.rect.x -= 1
-        if self.moving_bottom and self.rect.bottom < config.level1_width:
+        if self.moving_bottom and self.rect.bottom < config.level1_height:
             self.rect.y += 1
         if self.moving_top and self.rect.top > 0:
             self.rect.y -= 1
