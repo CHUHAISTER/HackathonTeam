@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
 import pygame
 import config
 import sprite
@@ -27,8 +26,12 @@ class Game:
         self.window = pygame.display
         self.window.set_caption('Game')
 
+        # Get user screen resolution
+        self.window_width = self.window.Info().current_w
+        self.window_height = self.window.Info().current_h
+        
         # Set screen_surface
-        self.screen_surface = self.window.set_mode(size=(config.level1_width, config.level1_height), flags=pygame.FULLSCREEN, depth=32)
+        self.screen_surface = self.window.set_mode(size=(self.window_width, self.window_height), flags=pygame.FULLSCREEN, depth=32)
         self.screen_surface.fill((150, 30, 0))
 
         # Game State
@@ -37,8 +40,8 @@ class Game:
         self.events = None
 
         # Set level_surface
-        self.level_surface = pygame.Surface((config.window_width, config.window_height))
-        self.level_surface.fill((255, 255, 255))
+        self.level_surface = pygame.Surface((self.window_width, self.window_height))
+        self.level_surface.fill((150, 255, 255))
 
         # Start Button
         self.button_start_surface = pygame.image.load("Art/start.jpg")
