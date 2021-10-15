@@ -55,7 +55,7 @@ def mainloop():
         if game_state == "Menu":
             mouse_on_button(events)
         elif game_state == "Playing":
-            pass
+            update_screen()
         window.update()
         mainloop()
 
@@ -74,7 +74,12 @@ def mouse_on_button(events):
             button_start_rect[1] < event.pos[1] < button_start_rect[1] + button_start_rect[3]:
                 global game_state
                 game_state = "Playing"
-                screen_surface.blit(level_surface, (0, 0))
+                window.update()
+
+
+def update_screen():
+    screen_surface.blit(level_surface, (0, 0))
+    level_surface.blit(main_character_surface, main_character_rect)
 
 
 pygame.init()
@@ -98,6 +103,10 @@ level_surface.fill((255, 255, 255))
 button_start_surface = pygame.image.load("Art/button_start.png")
 button_start_rect = button_start_surface.get_rect(topleft=(100, 100))
 screen_surface.blit(button_start_surface, button_start_rect)
+
+# Create Player
+main_character_surface = pygame.image.load("Art/test.png")
+main_character_rect = main_character_surface.get_rect(topleft=(500, 500))
 
 game_state = "Menu"
 
