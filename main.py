@@ -75,6 +75,11 @@ def mouse_on_button(events):
                 global game_state
                 game_state = "Playing"
                 window.update()
+        if event.type == 1025 and event.button == 1:
+            if button_exit_rect[0] < event.pos[0] < button_exit_rect[0] + button_exit_rect[2] and \
+            button_exit_rect[1] < event.pos[1] < button_exit_rect[1] + button_exit_rect[3]:
+                pygame.quit()
+                exit()
 
 
 def update_screen():
@@ -100,9 +105,14 @@ level_surface = pygame.Surface((window_width, window_height))
 level_surface.fill((255, 255, 255))
 
 # Start Button
-button_start_surface = pygame.image.load("Art/button_start.png")
-button_start_rect = button_start_surface.get_rect(topleft=(100, 100))
+button_start_surface = pygame.image.load("Art/start.jpg")
+button_start_rect = button_start_surface.get_rect(topleft=(400, 100))
 screen_surface.blit(button_start_surface, button_start_rect)
+
+# Exit Button
+button_exit_surface = pygame.image.load("Art/exit.jpg")
+button_exit_rect = button_exit_surface.get_rect(topleft=(420, 500))
+screen_surface.blit(button_exit_surface, button_exit_rect)
 
 # Create Player
 main_character_surface = pygame.image.load("Art/test.png")
