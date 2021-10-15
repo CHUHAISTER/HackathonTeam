@@ -29,7 +29,7 @@ class Game:
         # Get user screen resolution
         self.window_width = self.window.Info().current_w
         self.window_height = self.window.Info().current_h
-        
+
         # Set screen_surface
         self.screen_surface = self.window.set_mode(size=(self.window_width, self.window_height), flags=pygame.FULLSCREEN, depth=32)
         self.screen_surface.fill((150, 30, 0))
@@ -43,22 +43,13 @@ class Game:
         self.level_surface = pygame.Surface((self.window_width, self.window_height))
         self.level_surface.fill((150, 255, 255))
 
-        # Start Button
-        self.button_start_surface = pygame.image.load("Art/start.jpg")
-        self.button_start_rect = self.button_start_surface.get_rect(topleft=(400, 100))
-        self.screen_surface.blit(self.button_start_surface, self.button_start_rect)
-
-        # Exit Button
-        self.button_exit_surface = pygame.image.load("Art/exit.jpg")
-        self.button_exit_rect = self.button_exit_surface.get_rect(topleft=(420, 500))
-        self.screen_surface.blit(self.button_exit_surface, self.button_exit_rect)
-
     def mainloop(self):
         while True:
             self.clock.tick(60)
             self.events = pygame.event.get()
             self.binds()
             if self.game_state == "Menu":
+                self.build_menu()
                 self.mouse_on_button()
             elif self.game_state == "Playing":
                 player.move()
@@ -96,13 +87,13 @@ class Game:
     def mouse_on_button(self):
         for event in self.events:
             if event.type == 1025 and event.button == 1:
-                if self.button_start_rect[0] < event.pos[0] < self.button_start_rect[0] + self.button_start_rect[2] and \
-                self.button_start_rect[1] < event.pos[1] < self.button_start_rect[1] + self.button_start_rect[3]:
+                if button_start.rect[0] < event.pos[0] < button_start.rect[0] + button_start.rect[2] and \
+                button_start.rect[1] < event.pos[1] < button_start.rect[1] + button_start.rect[3]:
                     self.game_state = "Playing"
                     self.window.update()
             if event.type == 1025 and event.button == 1:
-                if self.button_exit_rect[0] < event.pos[0] < self.button_exit_rect[0] + self.button_exit_rect[2] and \
-                self.button_exit_rect[1] < event.pos[1] < self.button_exit_rect[1] + self.button_exit_rect[3]:
+                if button_exit.rect[0] < event.pos[0] < button_exit.rect[0] + button_exit.rect[2] and \
+                button_exit.rect[1] < event.pos[1] < button_exit.rect[1] + button_exit.rect[3]:
                     pygame.quit()
                     exit()
 
@@ -110,10 +101,20 @@ class Game:
         self.screen_surface.blit(self.level_surface, (0, 0))
         self.screen_surface.blit(player.surface, player.rect)
 
+    def build_menu(self):
+        self.screen_surface.blit(button_start.surface, button_start.rect)
+        self.screen_surface.blit(button_exit.surface, button_exit.rect)
 
-player = sprite.Player(500, 500, 'test')
+
+# Create player
+player = sprite.Player(500, 500, 5, 'test')
+
+# Create buttons
+button_start = buttons.Button(400, 100, 'button_start')
+button_exit = buttons.Button(420, 500, 'button_exit')
 
 # Create game instance
 game = Game()
+
 # Start
 game.mainloop()
