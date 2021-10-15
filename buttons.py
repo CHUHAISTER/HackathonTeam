@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import pygame
+import sprite
 
 
-class Button:
-    def __init__(self, name, coords):
-        # Here should use f-strings
-        # self.surface = pygame.image.load("Art/button_start.png")
-
-        # self.rect = self.surface.get_rect(topleft=coords)
-        pass
+class Button(sprite.Sprite):
+    def __init__(self, x, y, image):
+        super().__init__(x, y, image)
 
 
 # Here I'll draw all buttons in menu
