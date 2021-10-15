@@ -2,6 +2,9 @@
 
 import os
 import pygame
+import config
+import sprite
+import buttons
 
 """
 pygame.image.load() - returns Surface
@@ -14,110 +17,100 @@ if event.type == pygame.MOUSEMOTION: event return (pos)
 """
 
 
-class Sprite:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+class Game:
+    def __init__(self):
+        # Initialize Pygame
+        pygame.init()
+        self.clock = pygame.time.Clock()
 
+        # Set window
+        self.window = pygame.display
+        self.window.set_caption('Game')
 
-class Player(Sprite):
-    def __init__(self, x, y):
-        super().__init__(x, y)
-        pass
+        # Set screen_surface
+        self.screen_surface = self.window.set_mode(size=(config.level1_width, config.level1_height), flags=pygame.FULLSCREEN, depth=32)
+        self.screen_surface.fill((150, 30, 0))
 
-    def move(self):
-        pass
+        # Game State
+        self.game_state = "Menu"
+        # Pressed buttons on keyboard
+        self.events = None
 
-    def collision(self):
-        pass
+        # Set level_surface
+        self.level_surface = pygame.Surface((config.window_width, config.window_height))
+        self.level_surface.fill((255, 255, 255))
 
+        # Start Button
+        self.button_start_surface = pygame.image.load("Art/start.jpg")
+        self.button_start_rect = self.button_start_surface.get_rect(topleft=(400, 100))
+        self.screen_surface.blit(self.button_start_surface, self.button_start_rect)
 
-class Mob(Sprite):
-    def __init__(self, x, y):
-        super().__init__(x, y)
-        pass
+        # Exit Button
+        self.button_exit_surface = pygame.image.load("Art/exit.jpg")
+        self.button_exit_rect = self.button_exit_surface.get_rect(topleft=(420, 500))
+        self.screen_surface.blit(self.button_exit_surface, self.button_exit_rect)
 
-    def behaviour(self):
-        pass
+    def mainloop(self):
+        while True:
+            self.clock.tick(60)
+            self.events = pygame.event.get()
+            self.binds()
+            if self.game_state == "Menu":
+                self.mouse_on_button()
+            elif self.game_state == "Playing":
+                player.move()
+                self.draw_screen()
+            self.window.update()
 
-
-class Tile(Sprite):
-    def __init__(self, x, y):
-        super().__init__(x, y)
-        pass
-
-
-def mainloop():
-    while True:
-        clock.tick(60)
-        events = pygame.event.get()
-        binds(events)
-        if game_state == "Menu":
-            mouse_on_button(events)
-        elif game_state == "Playing":
-            update_screen()
-        window.update()
-        mainloop()
-
-
-def binds(events):
-    for event in events:
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-
-
-def mouse_on_button(events):
-    for event in events:
-        if event.type == 1025 and event.button == 1:
-            if button_start_rect[0] < event.pos[0] < button_start_rect[0] + button_start_rect[2] and \
-            button_start_rect[1] < event.pos[1] < button_start_rect[1] + button_start_rect[3]:
-                global game_state
-                game_state = "Playing"
-                window.update()
-        if event.type == 1025 and event.button == 1:
-            if button_exit_rect[0] < event.pos[0] < button_exit_rect[0] + button_exit_rect[2] and \
-            button_exit_rect[1] < event.pos[1] < button_exit_rect[1] + button_exit_rect[3]:
+    def binds(self):
+        for event in self.events:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    # Move player right
+                    player.moving_right = True
+                elif event.key == pygame.K_LEFT:
+                    # Move player left
+                    player.moving_left = True
+                elif event.key == pygame.K_UP:
+                    # Move player up
+                    player.moving_top = True
+                elif event.key == pygame.K_DOWN:
+                    # Move player down
+                    player.moving_bottom = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    player.moving_right = False
+                elif event.key == pygame.K_LEFT:
+                    player.moving_left = False
+                elif event.key == pygame.K_UP:
+                    player.moving_top = False
+                elif event.key == pygame.K_DOWN:
+                    player.moving_bottom = False
+
+    def mouse_on_button(self):
+        for event in self.events:
+            if event.type == 1025 and event.button == 1:
+                if self.button_start_rect[0] < event.pos[0] < self.button_start_rect[0] + self.button_start_rect[2] and \
+                self.button_start_rect[1] < event.pos[1] < self.button_start_rect[1] + self.button_start_rect[3]:
+                    self.game_state = "Playing"
+                    self.window.update()
+            if event.type == 1025 and event.button == 1:
+                if self.button_exit_rect[0] < event.pos[0] < self.button_exit_rect[0] + self.button_exit_rect[2] and \
+                self.button_exit_rect[1] < event.pos[1] < self.button_exit_rect[1] + self.button_exit_rect[3]:
+                    pygame.quit()
+                    exit()
+
+    def draw_screen(self):
+        self.screen_surface.blit(self.level_surface, (0, 0))
+        self.screen_surface.blit(player.surface, player.rect)
 
 
-def update_screen():
-    screen_surface.blit(level_surface, (0, 0))
-    level_surface.blit(main_character_surface, main_character_rect)
+player = sprite.Player(500, 500, 'test')
 
-
-pygame.init()
-clock = pygame.time.Clock()
-
-window = pygame.display
-
-window_width = 1366
-window_height = 768
-
-# Set screen_surface
-screen_surface = window.set_mode(size=(window_width, window_height), flags=pygame.FULLSCREEN, depth=32)
-screen_surface.fill((150, 30, 0))
-window.set_caption('Game')
-
-# Set level_surface
-level_surface = pygame.Surface((window_width, window_height))
-level_surface.fill((255, 255, 255))
-
-# Start Button
-button_start_surface = pygame.image.load("Art/start.jpg")
-button_start_rect = button_start_surface.get_rect(topleft=(400, 100))
-screen_surface.blit(button_start_surface, button_start_rect)
-
-# Exit Button
-button_exit_surface = pygame.image.load("Art/exit.jpg")
-button_exit_rect = button_exit_surface.get_rect(topleft=(420, 500))
-screen_surface.blit(button_exit_surface, button_exit_rect)
-
-# Create Player
-main_character_surface = pygame.image.load("Art/test.png")
-main_character_rect = main_character_surface.get_rect(topleft=(500, 500))
-
-game_state = "Menu"
-
-mainloop()
+# Create game instance
+game = Game()
+# Start
+game.mainloop()
