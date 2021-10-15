@@ -2,8 +2,8 @@
 
 import pygame
 import config
-import sprite
-import buttons
+from sprite import Player
+from buttons import Button
 
 """
 pygame.image.load() - returns Surface
@@ -106,15 +106,15 @@ class Game:
         self.screen_surface.blit(button_exit.surface, button_exit.rect)
 
 
-# Create player
-player = sprite.Player(500, 500, 5, 'test')
-
-# Create buttons
-button_start = buttons.Button(400, 100, 'button_start')
-button_exit = buttons.Button(420, 500, 'button_exit')
-
 # Create game instance
 game = Game()
+
+# Create player
+player = Player(500, 500, 5, 'test')
+
+# Create buttons
+button_start = Button("midtop", game.window_width/2, 100, 'button_start')
+button_exit = Button("midtop", game.window_width/2, 500, 'button_exit')
 
 # Start
 game.mainloop()
