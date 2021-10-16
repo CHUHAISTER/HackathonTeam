@@ -35,6 +35,9 @@ class Game:
         self.screen_surface = self.window.set_mode(size=(self.window_width, self.window_height), flags=pygame.FULLSCREEN, depth=32)
         self.screen_surface.fill((150, 30, 0))
 
+        # Camera_surface
+        self.camera_surface = pygame.Surface((self.window_width, self.window_height))
+
         # Game State
         self.game_state = "Menu"
         # Pressed buttons on keyboard
@@ -76,7 +79,9 @@ class Game:
         level1.surface.fill((150, 255, 255))
         level1.build_level()
         level1.surface.blit(player.surface, player.rect)
-        self.screen_surface.blit(level1.surface, (0, 0))
+        self.screen_surface.blit(self.camera_surface, (0, 0))
+        self.camera_surface.blit(level1.surface, (0, 0), area=(player.rect[0], player.rect[1],
+                                                               self.window_width, self.window_height))
 
     def build_menu(self):
         self.screen_surface.blit(button_start.surface, button_start.rect)
@@ -87,7 +92,7 @@ class Game:
 game = Game()
 
 # Create player
-player = Player(500, 500, 1, 1, 'test')
+player = Player(500, 500, 10, 10, 'test')
 
 # Create buttons
 button_start = Button("midtop", game.window_width/2, 100, 'button_start')
