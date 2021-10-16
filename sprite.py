@@ -6,7 +6,6 @@ image - image
 """
 
 import pygame
-import config
 
 
 class Sprite:
@@ -36,13 +35,13 @@ class Player(MovableSprite):
         super().__init__(x, y, speed, image)
 
     def move(self):
-        if self.moving_right and self.rect.right < config.level1_width:
+        if self.moving_right:
             self.rect.x += self.speed
-        if self.moving_left and self.rect.left > 0:
+        if self.moving_left:
             self.rect.x -= self.speed
-        if self.moving_bottom and self.rect.bottom < config.level1_height:
+        if self.moving_bottom:
             self.rect.y += self.speed
-        if self.moving_top and self.rect.top > 0:
+        if self.moving_top:
             self.rect.y -= self.speed
 
     def collision(self):
