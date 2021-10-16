@@ -4,7 +4,7 @@ import pygame
 import config
 from sprite import Player
 from buttons import Button
-import levelbuilder
+from level import Level
 
 """
 pygame.image.load() - returns Surface
@@ -39,13 +39,6 @@ class Game:
         self.game_state = "Menu"
         # Pressed buttons on keyboard
         self.events = None
-
-        # Set level1_surface
-        self.level1_surface = pygame.Surface(levelbuilder.size_level("level1"))
-        self.level1_surface.fill((150, 255, 255))
-
-        # Temporary
-        self.tileG = pygame.image.load("Art/G.png")
 
     def mainloop(self):
         while True:
@@ -102,19 +95,14 @@ class Game:
                     exit()
 
     def draw_level(self):
-        self.level1_surface.fill((150, 255, 255))
-        self.screen_surface.blit(self.level1_surface, (0, 0))
-        self.draw_map()
+        level1.surface.fill((150, 255, 255))
+        self.screen_surface.blit(level1.surface, (0, 0))
+        level1.build_level(self.screen_surface)
         self.screen_surface.blit(player.surface, player.rect)
 
     def build_menu(self):
         self.screen_surface.blit(button_start.surface, button_start.rect)
         self.screen_surface.blit(button_exit.surface, button_exit.rect)
-
-    def draw_map(self):
-        tile_list = levelbuilder.read_level("level1")
-        for tile in tile_list:
-            self.screen_surface.blit(self.tileG, (tile[0], tile[1]))
 
 
 # Create game instance
@@ -126,6 +114,9 @@ player = Player(500, 500, 5, 'test')
 # Create buttons
 button_start = Button("midtop", game.window_width/2, 100, 'button_start')
 button_exit = Button("midtop", game.window_width/2, 500, 'button_exit')
+
+# Create level instances
+level1 = Level("level1")
 
 # Start
 game.mainloop()
