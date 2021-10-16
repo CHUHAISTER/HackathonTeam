@@ -58,28 +58,6 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    # Move player right
-                    player.moving_right = True
-                elif event.key == pygame.K_LEFT:
-                    # Move player left
-                    player.moving_left = True
-                elif event.key == pygame.K_UP:
-                    # Move player up
-                    player.moving_top = True
-                elif event.key == pygame.K_DOWN:
-                    # Move player down
-                    player.moving_bottom = True
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RIGHT:
-                    player.moving_right = False
-                elif event.key == pygame.K_LEFT:
-                    player.moving_left = False
-                elif event.key == pygame.K_UP:
-                    player.moving_top = False
-                elif event.key == pygame.K_DOWN:
-                    player.moving_bottom = False
 
     def mouse_on_button(self):
         for event in self.events:
@@ -96,9 +74,9 @@ class Game:
 
     def draw_level(self):
         level1.surface.fill((150, 255, 255))
+        level1.build_level()
+        level1.surface.blit(player.surface, player.rect)
         self.screen_surface.blit(level1.surface, (0, 0))
-        level1.build_level(self.screen_surface)
-        self.screen_surface.blit(player.surface, player.rect)
 
     def build_menu(self):
         self.screen_surface.blit(button_start.surface, button_start.rect)
@@ -109,7 +87,7 @@ class Game:
 game = Game()
 
 # Create player
-player = Player(500, 500, 5, 'test')
+player = Player(500, 500, 1, 1, 'test')
 
 # Create buttons
 button_start = Button("midtop", game.window_width/2, 100, 'button_start')
