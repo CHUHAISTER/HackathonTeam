@@ -55,6 +55,7 @@ class Game:
                 player.move()
                 self.draw_level()
             self.window.update()
+            pygame.display.flip()
 
     def binds(self):
         for event in self.events:
