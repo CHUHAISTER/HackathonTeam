@@ -80,7 +80,8 @@ class Game:
         level1.build_level()
         level1.surface.blit(player.surface, player.rect)
         self.screen_surface.blit(self.camera_surface, (0, 0))
-        self.camera_surface.blit(level1.surface, (0, 0), area=(player.rect[0], player.rect[1],
+        self.camera_surface.blit(level1.surface, (0, 0), area=(player.rect[0]-(self.window_width/2),
+                                                               player.rect[1]-(self.window_height/2),
                                                                self.window_width, self.window_height))
 
     def build_menu(self):
