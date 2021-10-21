@@ -85,34 +85,16 @@ class Game:
         self.screen_surface.blit(self.camera_surface, (0, 0))
         x_rect_camera= player.rect[0]-(self.window_width/2)
         y_rect_camera= player.rect[1]-(self.window_height/2)
-        if x_rect_camera <= 0 and y_rect_camera <= 0:
-            self.camera_surface.blit(level1.surface, (0, 0), area=(0, 0,
-                                                                   self.window_width, self.window_height))
-        else:
-            if x_rect_camera <= 0:
-                self.camera_surface.blit(level1.surface, (0, 0), area=(0,y_rect_camera,
-                                                                   self.window_width, self.window_height))
-            elif x_rect_camera  + self.window_width >= level1.level_size[0]:
-                print(1)
-                self.camera_surface.blit(level1.surface, (0, 0), area=(level1.level_size[0] - self.window_width,
-                                                                       y_rect_camera,
-                                                                         self.window_width, self.window_height))
-            else:
-                self.camera_surface.blit(level1.surface, (0, 0), area=(x_rect_camera,
-                                                                      y_rect_camera,
-                                                                      self.window_width, self.window_height))
-            if y_rect_camera   <= 0:
-                self.camera_surface.blit(level1.surface, (0, 0), area=(player.rect[0] - (self.window_width / 2), 0,
-                                                                           self.window_width, self.window_height))
-            elif y_rect_camera  + self.window_height>= level1.level_size[1]:
-                print (2)
-                self.camera_surface.blit(level1.surface, (0, 0), area=(player.rect[0] - (self.window_width / 2),
-                                                                       level1.level_size[1] - self.window_height,
-                                                                       self.window_width, self.window_height))
-        #else:
-        #    self.camera_surface.blit(level1.surface, (0, 0), area=(player.rect[0] - (self.window_width / 2),
-        #                                                           player.rect[1] - (self.window_height / 2),
-        #                                                           self.window_width, self.window_height))
+        if x_rect_camera <= 0:
+            x_rect_camera = 0
+        elif x_rect_camera  + self.window_width >= level1.level_size[0]:
+            x_rect_camera = level1.level_size[0] - self.window_width
+        if y_rect_camera   <= 0:
+            y_rect_camera = 0
+        elif y_rect_camera  + self.window_height>= level1.level_size[1]:
+            y_rect_camera = level1.level_size[1] - self.window_height    
+        self.camera_surface.blit(level1.surface, (0, 0), area=(x_rect_camera, y_rect_camera, self.window_width, self.window_height))
+
 
     def build_menu(self):
         self.screen_surface.blit(button_start.surface, button_start.rect)
