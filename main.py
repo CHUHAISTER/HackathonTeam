@@ -54,7 +54,7 @@ class Game:
                 self.build_menu()
                 self.mouse_on_button()
             elif self.game_state == "Playing":
-                player.move()
+                player.move(level1.tile_list)
                 self.draw_level()
             self.window.update()
             pygame.display.flip()
@@ -105,7 +105,7 @@ class Game:
 game = Game()
 
 # Create player
-player = Player(500, 500, 10, 10, 'test')
+player = Player(500, 500, 10, 'test')
 
 # Create buttons
 button_start = Button("midtop", game.window_width/2, 100, 'button_start')
