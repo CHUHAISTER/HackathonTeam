@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-'''
+"""
 tile_list[tile[]]
-tile[top_left_x, top_left_y, bottom_right_x, bottom_right_y]
-'''
+tile[left_x, top_y, right_x, bottom_y]
+"""
 
 
 import pygame
@@ -29,16 +29,10 @@ class Level:
         self.surface = pygame.Surface(self.level_size)
 
     def read_level(self):
-        x = 0
-        y = 0
-
         for row in range(0, len(self.level), 1):
-            x = 0
             for character in range(0, len(self.level[row]), 1):
                 if self.level[row][character] == "G":
-                    self.tile_list.append([x, y, (x+64), (y+64), self.level[row][character]])
-                x += 64
-            y += 64
+                    self.tile_list.append([character*64, row*64, self.level[row][character]])
 
     def size_level(self):
         for row in self.level:
@@ -51,4 +45,4 @@ class Level:
 
     def build_level(self):
         for tile in self.tile_list:
-            self.surface.blit(config.tile_textures[tile[4]], (tile[0], tile[1]))
+            self.surface.blit(config.tile_textures[tile[2]], (tile[0], tile[1]))
