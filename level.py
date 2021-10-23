@@ -41,6 +41,7 @@ class Level:
         self.level_size[0] = self.level_size[0] * 64
         self.level_size[1] = len(self.level) * 64
 
+
         return self.level_size
 
     def build_level(self):
