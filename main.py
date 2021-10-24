@@ -43,8 +43,6 @@ class Game:
         # Pressed buttons on keyboard
         self.events = None
 
-
-
     def mainloop(self):
         while True:
             self.clock.tick(60)
@@ -64,6 +62,13 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+            # Alt+Tab redrawing
+            if self.game_state == "Menu" and event.type == pygame.ACTIVEEVENT:
+                self.build_menu()
+                self.window.update()
+            elif self.game_state == "Playing" and event.type == pygame.ACTIVEEVENT:
+                self.draw_level()
+                self.window.update()
 
     def mouse_on_button(self):
         for event in self.events:
@@ -83,18 +88,17 @@ class Game:
         level1.build_level()
         level1.surface.blit(player.surface, player.rect)
         self.screen_surface.blit(self.camera_surface, (0, 0))
-        x_rect_camera= player.rect[0]-(self.window_width/2)
-        y_rect_camera= player.rect[1]-(self.window_height/2)
+        x_rect_camera = player.rect[0]-(self.window_width/2)
+        y_rect_camera = player.rect[1]-(self.window_height/2)
         if x_rect_camera <= 0:
             x_rect_camera = 0
-        elif x_rect_camera  + self.window_width >= level1.level_size[0]:
+        elif x_rect_camera + self.window_width >= level1.level_size[0]:
             x_rect_camera = level1.level_size[0] - self.window_width
-        if y_rect_camera   <= 0:
+        if y_rect_camera <= 0:
             y_rect_camera = 0
-        elif y_rect_camera  + self.window_height>= level1.level_size[1]:
+        elif y_rect_camera + self.window_height >= level1.level_size[1]:
             y_rect_camera = level1.level_size[1] - self.window_height    
         self.camera_surface.blit(level1.surface, (0, 0), area=(x_rect_camera, y_rect_camera, self.window_width, self.window_height))
-
 
     def build_menu(self):
         self.screen_surface.blit(button_start.surface, button_start.rect)
